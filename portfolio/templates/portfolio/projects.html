@@ -1,0 +1,114 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Projects - {{ profile.name|default:"Abid Hussain" }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content" data-aos="fade-right">
+                    <h1 class="hero-title">My Projects</h1>
+                    <p class="hero-subtitle">Explore my portfolio of innovative solutions and applications</p>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="text-center">
+                    <i class="fas fa-laptop-code text-white" style="font-size: 12rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            {% for project in projects %}
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card h-100">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+                        <i class="fas fa-project-diagram fa-4x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title">{{ project.title }}</h5>
+                            {% if project.featured %}
+                            <span class="badge bg-primary">Featured</span>
+                            {% endif %}
+                        </div>
+                        
+                        <p class="card-text flex-grow-1">{{ project.description|truncatewords:25 }}</p>
+                        
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-tags me-1"></i>
+                                {{ project.technologies|truncatewords:8 }}
+                            </small>
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'portfolio:project_detail' project.id %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-eye me-1"></i> View Details
+                                </a>
+                                <div>
+                                    {% if project.github_url %}
+                                    <a href="{{ project.github_url }}" class="btn btn-outline-secondary btn-sm me-1" target="_blank">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    {% endif %}
+                                    {% if project.live_url %}
+                                    <a href="{{ project.live_url }}" class="btn btn-outline-success btn-sm" target="_blank">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="card">
+                    <div class="card-body py-5">
+                        <i class="fas fa-folder-open fa-5x text-muted mb-4"></i>
+                        <h3>No Projects Yet</h3>
+                        <p class="text-muted">Projects will be displayed here once they are added.</p>
+                        <a href="{% url 'portfolio:contact' %}" class="btn btn-primary">Get In Touch</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title" data-aos="fade-up">Interested in Working Together?</h2>
+                <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">
+                    I'm always excited to take on new challenges and create innovative solutions. 
+                    Let's discuss how I can help bring your ideas to life.
+                </p>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <a href="{% url 'portfolio:contact' %}" class="btn btn-primary btn-lg me-3">Start a Project</a>
+                    <a href="{% url 'portfolio:services' %}" class="btn btn-outline-primary btn-lg">View Services</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

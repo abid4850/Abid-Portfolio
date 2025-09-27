@@ -1,0 +1,241 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}{{ profile.name }} - Portfolio{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content" data-aos="fade-right">
+                    <h1 class="hero-title">{{ profile.name }}</h1>
+                    <p class="hero-subtitle">Python Developer | Data Scientist | AI Specialist</p>
+                    <p class="text-white mb-4">{{ profile.objective|truncatewords:30 }}</p>
+                    <div class="hero-buttons">
+                        <a href="{% url 'portfolio:projects' %}" class="btn btn-primary me-3">View Projects</a>
+                        <a href="{% url 'portfolio:contact' %}" class="btn btn-outline-light">Get In Touch</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="text-center">
+                    <div class="hero-image">
+                        <i class="fas fa-user-circle text-white" style="font-size: 15rem; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">About Me</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-body p-5">
+                        <p class="lead text-center">{{ profile.objective }}</p>
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><strong>Email:</strong> {{ profile.email }}</li>
+                                    <li><strong>Phone:</strong> {{ profile.phone }}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><strong>Location:</strong> {{ profile.address }}</li>
+                                    <li><strong>Status:</strong> Available for Projects</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="{% url 'portfolio:about' %}" class="btn btn-primary">Learn More About Me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="section-padding">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Skills & Expertise</h2>
+        <div class="row">
+            {% for category in skill_categories %}
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="{{ category.icon }} fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <div class="skills-list">
+                            {% for skill in category.skills.all|slice:":3" %}
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <span>{{ skill.name }}</span>
+                                    <span>{{ skill.proficiency }}%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: {{ skill.proficiency }}%"></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% if category.skills.count > 3 %}
+                            <small class="text-muted">+{{ category.skills.count|add:"-3" }} more skills</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'portfolio:skills' %}" class="btn btn-primary">View All Skills</a>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Featured Projects</h2>
+        <div class="row">
+            {% for project in featured_projects %}
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title">{{ project.title }}</h5>
+                            {% if project.featured %}
+                            <span class="badge bg-primary">Featured</span>
+                            {% endif %}
+                        </div>
+                        <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-tags"></i> {{ project.technologies|truncatewords:5 }}
+                            </small>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'portfolio:project_detail' project.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" class="btn btn-outline-secondary btn-sm" target="_blank">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'portfolio:projects' %}" class="btn btn-primary">View All Projects</a>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="section-padding">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Services</h2>
+        <div class="row">
+            {% for service in services %}
+            <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <i class="{{ service.icon }} fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">{{ service.title }}</h5>
+                        <p class="card-text">{{ service.description|truncatewords:15 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'portfolio:services' %}" class="btn btn-primary">Learn More</a>
+        </div>
+    </div>
+</section>
+
+<!-- Education Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Education</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                {% for edu in education %}
+                <div class="card mb-3" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h5 class="card-title">{{ edu.degree }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ edu.institution }}</h6>
+                                {% if edu.description %}
+                                <p class="card-text">{{ edu.description }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <span class="badge bg-primary">{{ edu.year }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact CTA Section -->
+<section class="section-padding" style="background: var(--gradient);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="text-white mb-4" data-aos="fade-up">Ready to Start Your Project?</h2>
+                <p class="text-white mb-4" data-aos="fade-up" data-aos-delay="100">
+                    Let's discuss how I can help bring your ideas to life with cutting-edge technology and innovative solutions.
+                </p>
+                <a href="{% url 'portfolio:contact' %}" class="btn btn-light btn-lg" data-aos="fade-up" data-aos-delay="200">
+                    Get In Touch
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Animate skill bars when they come into view
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const skillBars = entry.target.querySelectorAll('.skill-progress');
+                skillBars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.skills-list').forEach(skillList => {
+        observer.observe(skillList);
+    });
+</script>
+{% endblock %}
+

@@ -1,0 +1,160 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Services - {{ profile.name|default:"Abid Hussain" }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content" data-aos="fade-right">
+                    <h1 class="hero-title">My Services</h1>
+                    <p class="hero-subtitle">Professional solutions tailored to your business needs</p>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="text-center">
+                    <i class="fas fa-handshake text-white" style="font-size: 12rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            {% for service in services %}
+            <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="{{ service.icon }} fa-4x text-primary mb-3"></i>
+                            <h4 class="card-title">{{ service.title }}</h4>
+                        </div>
+                        <p class="card-text">{{ service.description }}</p>
+                        
+                        <!-- Service Features -->
+                        <div class="mt-4">
+                            {% if service.title == "Web Development" %}
+                            <h6>What's Included:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Custom Django Applications</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Responsive Design</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Database Integration</li>
+                                <li><i class="fas fa-check text-success me-2"></i> API Development</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Deployment & Maintenance</li>
+                            </ul>
+                            {% elif service.title == "Data Science & Analytics" %}
+                            <h6>What's Included:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Data Analysis & Visualization</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Statistical Modeling</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Dashboard Creation</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Business Intelligence</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Reporting Solutions</li>
+                            </ul>
+                            {% elif service.title == "AI & Machine Learning" %}
+                            <h6>What's Included:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Custom AI Models</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Natural Language Processing</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Predictive Analytics</li>
+                                <li><i class="fas fa-check text-success me-2"></i> AI Integration</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Model Optimization</li>
+                            </ul>
+                            {% elif service.title == "Automation & Workflows" %}
+                            <h6>What's Included:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i> Process Automation</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Data Scraping Solutions</li>
+                                <li><i class="fas fa-check text-success me-2"></i> API Integration</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Workflow Optimization</li>
+                                <li><i class="fas fa-check text-success me-2"></i> Custom Scripts</li>
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="card">
+                    <div class="card-body py-5">
+                        <i class="fas fa-tools fa-5x text-muted mb-4"></i>
+                        <h3>Services Coming Soon</h3>
+                        <p class="text-muted">Service offerings will be displayed here.</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Process Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">My Process</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-comments fa-2x"></i>
+                    </div>
+                    <h5>1. Consultation</h5>
+                    <p>Understanding your requirements and project goals</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-drafting-compass fa-2x"></i>
+                    </div>
+                    <h5>2. Planning</h5>
+                    <p>Creating detailed project roadmap and architecture</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-code fa-2x"></i>
+                    </div>
+                    <h5>3. Development</h5>
+                    <p>Building your solution with best practices and quality code</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-rocket fa-2x"></i>
+                    </div>
+                    <h5>4. Delivery</h5>
+                    <p>Testing, deployment, and ongoing support</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section-padding" style="background: var(--gradient);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="text-white mb-4" data-aos="fade-up">Ready to Get Started?</h2>
+                <p class="text-white mb-4" data-aos="fade-up" data-aos-delay="100">
+                    Let's discuss your project requirements and how I can help you achieve your goals.
+                </p>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <a href="{% url 'portfolio:contact' %}" class="btn btn-light btn-lg me-3">Start Your Project</a>
+                    <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-light btn-lg">View My Work</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

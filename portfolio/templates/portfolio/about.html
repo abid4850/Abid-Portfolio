@@ -1,0 +1,104 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}About - {{ profile.name }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content" data-aos="fade-right">
+                    <h1 class="hero-title">About Me</h1>
+                    <p class="hero-subtitle">Get to know more about my journey and expertise</p>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="text-center">
+                    <i class="fas fa-user-circle text-white" style="font-size: 12rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Content -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">{{ profile.name }}</h2>
+                        <p class="lead">{{ profile.objective }}</p>
+                        
+                        <div class="row mt-5">
+                            <div class="col-md-6">
+                                <h5>Contact Information</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-envelope text-primary me-2"></i> {{ profile.email }}</li>
+                                    <li><i class="fas fa-phone text-primary me-2"></i> {{ profile.phone }}</li>
+                                    <li><i class="fas fa-map-marker-alt text-primary me-2"></i> {{ profile.address }}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Personal Details</h5>
+                                <ul class="list-unstyled">
+                                    {% if profile.date_of_birth %}
+                                    <li><strong>Date of Birth:</strong> {{ profile.date_of_birth }}</li>
+                                    {% endif %}
+                                    {% if profile.domicile %}
+                                    <li><strong>Domicile:</strong> {{ profile.domicile }}</li>
+                                    {% endif %}
+                                    {% if profile.marital_status %}
+                                    <li><strong>Marital Status:</strong> {{ profile.marital_status }}</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="{% url 'portfolio:contact' %}" class="btn btn-primary me-3">Get In Touch</a>
+                            <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-primary">View My Work</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Professional Journey -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Professional Journey</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="timeline">
+                    <div class="card mb-4" data-aos="fade-up">
+                        <div class="card-body">
+                            <h5 class="card-title">Current Focus</h5>
+                            <p class="card-text">Specializing in Python development, Django web applications, and cutting-edge AI/ML solutions. Passionate about creating intelligent, data-driven applications that solve real-world problems.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card-body">
+                            <h5 class="card-title">Technical Expertise</h5>
+                            <p class="card-text">Proficient in modern web development frameworks, data science tools, and artificial intelligence technologies. Experienced in building scalable applications and implementing automation solutions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-body">
+                            <h5 class="card-title">Vision & Goals</h5>
+                            <p class="card-text">Committed to leveraging technology for innovation and driving digital transformation. Always learning and adapting to emerging technologies to deliver exceptional solutions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

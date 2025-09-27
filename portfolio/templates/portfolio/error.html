@@ -1,0 +1,19 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Error - Abid Hussain Portfolio{% endblock %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mx-auto text-center">
+                <i class="fas fa-exclamation-triangle fa-5x text-warning mb-4"></i>
+                <h2>Oops! Something went wrong</h2>
+                <p class="lead">{{ error|default:"An unexpected error occurred. Please try again later." }}</p>
+                <a href="{% url 'portfolio:home' %}" class="btn btn-primary">Go Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
