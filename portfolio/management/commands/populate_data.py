@@ -12,15 +12,16 @@ class Command(BaseCommand):
             "contact": {
                 "phone": "0301-4850613",
                 "email": "abidhussainnoul512@gmail.com",
-                "address": "ThathaNoulan, Sharaqpur, Distt. Sheikhupura, Punjab."
+                "address": "Lahore, Punjab, Pakistan"
             },
             "objective": "To apply my expertise in Python, Django (Web Development), and data science workflows alongside advanced skills in AI and Generative Models (LLMs, LoRA/QLoRA, RAG/CAG, NLP, AI agents, and prompt engineering) to build intelligent, data-driven solutions. I aim to leverage my experience in data analysis, visualization (Power BI, Tableau, Plotly), cloud (AWS), and automation tools (n8n, data scraping) to solve real-world problems, enhance decision-making, and drive innovation in a forward-looking organization.",
             "profile": {
                 "father_name": "Hadayat Ali",
                 "date_of_birth": "Feb, 15, 1986.",
+                "nationality": "Pakistani",
                 "cnic": "35401-1249389-9",
                 "marital_status": "Married",
-                "domicile": "Sheikhupura (Punjab)",
+                "domicile": "Lahore (Punjab)",
                 "religion": "Islam",
                 "height": "5 fit, 10 Inch."
             },

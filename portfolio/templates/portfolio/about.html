@@ -15,7 +15,15 @@
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <div class="text-center">
-                    <i class="fas fa-user-circle text-white" style="font-size: 12rem; opacity: 0.3;"></i>
+                    <div class="hero-image">
+                        {# Prefer the uploaded image, fall back to a shipped media file, then to static #}
+                        {% if profile.profile_image %}
+                            <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}" class="img-fluid rounded-circle shadow-lg" loading="lazy" width="320" height="320">
+                        {% else %}
+                            {# Try a bundled media fallback (media/abidpic.jpg) which you have in your workspace, else use static #}
+                            <img src="/media/abidpic.jpg" alt="{{ profile.name }}" class="img-fluid rounded-circle shadow-lg" loading="lazy" width="320" height="320">
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,9 +55,7 @@
                                     {% if profile.date_of_birth %}
                                     <li><strong>Date of Birth:</strong> {{ profile.date_of_birth }}</li>
                                     {% endif %}
-                                    {% if profile.domicile %}
-                                    <li><strong>Domicile:</strong> {{ profile.domicile }}</li>
-                                    {% endif %}
+                                    <li><strong>Nationality:</strong> {{ profile.nationality|default:"Pakistani" }}</li>
                                     {% if profile.marital_status %}
                                     <li><strong>Marital Status:</strong> {{ profile.marital_status }}</li>
                                     {% endif %}
