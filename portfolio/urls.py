@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views.robots import robots_txt
 
 app_name = 'portfolio'
 
@@ -12,5 +13,8 @@ urlpatterns = [
     path('services/', views.services_view, name='services'),
     path('contact/', views.contact, name='contact'),
     path('api/skills/', views.api_skills, name='api_skills'),
+    path('blogs/', views.blogs, name='blogs'),
+    path('blogs/<slug:slug>/', views.blog_detail, name='blog_detail'),
+    path('robots.txt', robots_txt, name='robots_txt'),
 ]
 

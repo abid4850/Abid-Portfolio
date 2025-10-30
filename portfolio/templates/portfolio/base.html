@@ -1,9 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Abid Hussain - Portfolio{% endblock %}</title>
+    <title>{% block meta_title %}{{ meta_title }}{% endblock %}</title>
+    
+    {# Primary Meta Tags #}
+    <meta name="title" content="{{ meta_title }}">
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="keywords" content="{{ meta_keywords }}">
+    <meta name="author" content="{{ meta_author }}">
+    
+    {# Open Graph / Facebook #}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site_url }}{{ request.path }}">
+    <meta property="og:title" content="{{ meta_title }}">
+    <meta property="og:description" content="{{ meta_description }}">
+    <meta property="og:image" content="{{ meta_image }}">
+    
+    {# Twitter #}
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ site_url }}{{ request.path }}">
+    <meta property="twitter:title" content="{{ meta_title }}">
+    <meta property="twitter:description" content="{{ meta_description }}">
+    <meta property="twitter:image" content="{{ meta_image }}">
+    
+    {# Canonical URL #}
+    <link rel="canonical" href="{{ site_url }}{{ request.path }}">
+    
+    {# JSON-LD Schema #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "{{ meta_author }}",
+        "url": "{{ site_url }}",
+        "image": "{{ meta_image }}",
+        "description": "{{ meta_description }}",
+        "sameAs": [
+            {% if site_profile.github_url %}"{{ site_profile.github_url }}",{% endif %}
+            {% if site_profile.linkedin_url %}"{{ site_profile.linkedin_url }}",{% endif %}
+            {% if site_profile.twitter_url %}"{{ site_profile.twitter_url }}"{% endif %}
+        ],
+        "jobTitle": "Python Developer & Data Scientist",
+        "alumniOf": "University Name",
+        "knowsAbout": [
+            "Python",
+            "Django",
+            "Data Science",
+            "Machine Learning",
+            "Artificial Intelligence",
+            "Web Development"
+        ]
+    }
+    </script>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -223,6 +274,7 @@
         .social-links a.twitter, .social-links a.x { color: #1DA1F2; }
         .social-links a.github { color: #333; }
         .social-links a.linkedin { color: #0A66C2; }
+        .social-links a.huggingface { color: #FF6F20; }
 
         .social-links a:hover {
             filter: brightness(0.95);
@@ -258,6 +310,21 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+        {# JSON-LD structured data for SEO #}
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "{{ site_profile.name|default:'Abid Hussain' }}",
+            "jobTitle": "Python Developer | Data Scientist | AI Specialist",
+            "email": "{{ site_profile.email|default:'abidhussainnoul512@gmail.com' }}",
+            "telephone": "{{ site_profile.phone|default:'' }}",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "{{ site_profile.address|default:'Lahore, Punjab, Pakistan' }}"
+            }
+        }
+        </script>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
@@ -279,6 +346,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'portfolio:skills' %}">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'portfolio:blogs' %}">Blogs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'portfolio:projects' %}">Projects</a>
@@ -317,6 +387,18 @@
                    <a href="https://x.com/yourusername" class="twitter" target="_blank"><i class="fab fa-x-twitter"></i></a>
                    <a href="https://github.com/abid4850" class="github" target="_blank"><i class="fab fa-github"></i></a>
                    <a href="https://www.linkedin.com/in/yourusername/" class="linkedin" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                   <a href="https://huggingface.co/yourusername" class="huggingface" target="_blank" aria-label="Hugging Face" title="Hugging Face">
+                       <!-- Inline Hugging Face-like logo (uses currentColor) -->
+                       <svg class="social-svg" width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                           <!-- rounded background -->
+                           <rect x="1" y="1" width="22" height="22" rx="5" ry="5" fill="currentColor" />
+                           <!-- eyes -->
+                           <circle cx="8.2" cy="9.5" r="1.1" fill="#fff" />
+                           <circle cx="15.8" cy="9.5" r="1.1" fill="#fff" />
+                           <!-- smile -->
+                           <path d="M7.2 14.2c1.1 1.4 3.2 2.1 4.8 2.1 1.6 0 3.6-0.7 4.8-2.1" stroke="#fff" stroke-width="1.4" stroke-linecap="round" fill="none" />
+                       </svg>
+                   </a>
                    </div>
             </div>
         </div>
@@ -362,6 +444,16 @@
             });
         });
     </script>
+    
+        <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+        <script type="module">
+	       import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	         createChat({
+		   webhookUrl: 'http://localhost:5678/webhook/9a7750ab-e5c4-451f-b32b-c3e260d3702f/chat'
+	      });
+        </script>
+     
     
     {% block extra_js %}{% endblock %}
 </body>

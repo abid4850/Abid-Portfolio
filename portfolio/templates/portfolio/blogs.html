@@ -1,0 +1,32 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Blogs - {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <h2 class="section-title text-center">Blogs</h2>
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        {% if post.excerpt %}
+                        <p class="card-text">{{ post.excerpt|truncatewords:30 }}</p>
+                        {% else %}
+                        <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+                        {% endif %}
+                        <a href="{% url 'portfolio:blog_detail' post.slug %}" class="btn btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">No blog posts yet.</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

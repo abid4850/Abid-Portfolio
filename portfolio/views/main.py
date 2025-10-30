@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from .models import Profile, SkillCategory, Skill, Education, Project, Service, Contact
-from .models import Blog
+from ..models import Profile, SkillCategory, Skill, Education, Project, Service, Contact
+from ..models import Blog
 
 def home(request):
     """Home page view with all portfolio sections"""
@@ -81,6 +81,26 @@ def services_view(request):
     except Exception as e:
         return render(request, 'portfolio/error.html', {'error': str(e)})
 
+def contact(request):
+    """Contact page"""
+    try:
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            message = request.POST.get('message')
+            
+            Contact.objects.create(
+                name=name,
+                email=email,
+                message=message
+            )
+            messages.success(request, 'Message sent successfully!')
+            return render(request, 'portfolio/contact.html')
+            
+        return render(request, 'portfolio/contact.html')
+    except Exception as e:
+        return render(request, 'portfolio/error.html', {'error': str(e)})
+
 def blogs(request):
     """List of blog posts"""
     try:
@@ -89,67 +109,26 @@ def blogs(request):
     except Exception as e:
         return render(request, 'portfolio/error.html', {'error': str(e)})
 
-
 def blog_detail(request, slug):
+    """Individual blog post"""
     try:
         post = get_object_or_404(Blog, slug=slug)
         return render(request, 'portfolio/blog_detail.html', {'post': post, 'profile': Profile.objects.first()})
     except Exception as e:
         return render(request, 'portfolio/error.html', {'error': str(e)})
 
-def contact(request):
-    """Contact page with contact form"""
-    if request.method == 'POST':
-        try:
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            subject = request.POST.get('subject')
-            message = request.POST.get('message')
-            
-            if name and email and subject and message:
-                Contact.objects.create(
-                    name=name,
-                    email=email,
-                    subject=subject,
-                    message=message
-                )
-                messages.success(request, 'Thank you for your message! I will get back to you soon.')
-            else:
-                messages.error(request, 'Please fill in all required fields.')
-        except Exception as e:
-            messages.error(request, 'An error occurred. Please try again.')
-    
-    try:
-        profile = Profile.objects.first()
-        context = {
-            'profile': profile,
-        }
-        return render(request, 'portfolio/contact.html', context)
-    except Exception as e:
-        return render(request, 'portfolio/error.html', {'error': str(e)})
-
-@csrf_exempt
 def api_skills(request):
-    """API endpoint for skills data"""
+    """API endpoint for skills"""
     try:
-        skill_categories = SkillCategory.objects.prefetch_related('skills').all()
+        categories = SkillCategory.objects.prefetch_related('skills').all()
         data = []
-        
-        for category in skill_categories:
-            category_data = {
+        for category in categories:
+            skills = [{'name': skill.name, 'proficiency': skill.proficiency} 
+                     for skill in category.skills.all()]
+            data.append({
                 'name': category.name,
-                'icon': category.icon,
-                'skills': []
-            }
-            
-            for skill in category.skills.all():
-                category_data['skills'].append({
-                    'name': skill.name,
-                    'proficiency': skill.proficiency
-                })
-            
-            data.append(category_data)
-        
-        return JsonResponse({'skill_categories': data})
+                'skills': skills
+            })
+        return JsonResponse({'categories': data})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)

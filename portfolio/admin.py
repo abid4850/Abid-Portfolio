@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, SkillCategory, Skill, Education, Project, Service, Contact
+from .models import Profile, SkillCategory, Skill, Education, Project, Service, Contact, Blog
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -40,3 +40,10 @@ class ContactAdmin(admin.ModelAdmin):
     list_filter = ['responded', 'created_at']
     search_fields = ['name', 'email', 'subject']
     readonly_fields = ['created_at']
+
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ['title', 'slug', 'published_date', 'created_at']
+    prepopulated_fields = {'slug': ('title',)}
+    search_fields = ['title', 'excerpt', 'content']
