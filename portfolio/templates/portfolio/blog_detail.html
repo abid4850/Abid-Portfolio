@@ -6,14 +6,20 @@
 <section class="section-padding">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h1 class="mb-3">{{ post.title }}</h1>
+            <div class="col-lg-10">
+                {% if post.image %}
+                <div class="mb-5 rounded-2xl overflow-hidden shadow-xl" style="max-height: 500px; overflow: hidden;">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-100" style="height: 100%; object-fit: cover;">
+                </div>
+                {% endif %}
+                <div class="card border-0 shadow-lg rounded-2xl">
+                    <div class="card-body p-5">
+                        <h1 class="mb-2" style="font-size: 2.5rem; font-weight: 800;">{{ post.title }}</h1>
                         {% if post.published_date %}
-                        <p class="text-muted">Published: {{ post.published_date }}</p>
+                        <p class="text-muted">📅 Published on {{ post.published_date|date:"F d, Y" }}</p>
                         {% endif %}
-                        <div class="post-content">
+                        <hr style="margin: 2rem 0;">
+                        <div class="post-content" style="font-size: 1.1rem; line-height: 1.8;">
                             {{ post.content|safe }}
                         </div>
                     </div>

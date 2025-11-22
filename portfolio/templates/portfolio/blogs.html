@@ -9,15 +9,21 @@
         <div class="row">
             {% for post in posts %}
             <div class="col-lg-6 mb-4">
-                <div class="card h-100">
+                <div class="card h-100 shadow-lg border-0 rounded-lg overflow-hidden transition">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="card-img-top" style="height: 250px; object-fit: cover;">
+                    {% else %}
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600" style="height: 250px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title">{{ post.title }}</h5>
+                        <h5 class="card-title font-weight-bold">{{ post.title }}</h5>
+                        <p class="text-muted small">{{ post.published_date|date:"M d, Y" }}</p>
                         {% if post.excerpt %}
-                        <p class="card-text">{{ post.excerpt|truncatewords:30 }}</p>
+                        <p class="card-text">{{ post.excerpt|truncatewords:20 }}</p>
                         {% else %}
-                        <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+                        <p class="card-text">{{ post.content|striptags|truncatewords:20 }}</p>
                         {% endif %}
-                        <a href="{% url 'portfolio:blog_detail' post.slug %}" class="btn btn-outline-primary">Read More</a>
+                        <a href="{% url 'portfolio:blog_detail' post.slug %}" class="btn btn-primary mt-3">Read Full Article →</a>
                     </div>
                 </div>
             </div>

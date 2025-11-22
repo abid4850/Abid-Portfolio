@@ -1,5 +1,8 @@
 import json
+from pathlib import Path
 from django.core.management.base import BaseCommand
+from django.core.files import File
+from django.conf import settings
 from portfolio.models import Profile, SkillCategory, Skill, Education, Project, Service
 
 class Command(BaseCommand):
@@ -127,31 +130,78 @@ class Command(BaseCommand):
             Education.objects.create(**edu)
             self.stdout.write(f'Created education: {edu["degree"]}')
 
-        # Create Sample Projects
+        # Create Sample Projects (with correct GitHub URLs and professional descriptions)
         projects_data = [
             {
-                'title': 'AI-Powered Data Analysis Dashboard',
-                'description': 'A comprehensive dashboard built with Django and integrated with machine learning models for predictive analytics. Features real-time data visualization using Plotly and advanced AI algorithms for pattern recognition.',
-                'technologies': 'Django, Python, Machine Learning, Plotly, Pandas, NumPy',
-                'featured': True
+                'title': 'Django Tip Prediction ML App',
+                'description': 'Production-grade ML API built with Django for tip prediction. Features model versioning, REST API endpoints, Docker containerization, and scalable inference pipelines for real-world ML deployment.',
+                'technologies': 'Django, DRF, Scikit-learn, PostgreSQL, Docker, REST APIs',
+                'github_url': 'https://github.com/abid4850/tip_prediction_django_app',
+                'live_url': '',
+                'featured': True,
+                'image_file': 'django-ml.png',
             },
             {
-                'title': 'E-commerce Web Application',
-                'description': 'Full-stack e-commerce platform with Django backend, featuring user authentication, payment integration, and inventory management system.',
-                'technologies': 'Django, HTML, CSS, JavaScript, PostgreSQL',
-                'featured': True
+                'title': 'Interactive Data Visualization Dashboard',
+                'description': 'Advanced interactive dashboards with drill-down analytics, KPIs, real-time data feeds and exportable reports. Built with Plotly, Streamlit, and optimized Pandas pipelines for high-performance analytics and insights.',
+                'technologies': 'Plotly, Streamlit, Pandas, SQL, JavaScript, Data Analysis',
+                'github_url': 'https://github.com/abid4850/WordCloud_App',
+                'live_url': '',
+                'featured': True,
+                'image_file': 'data-viz.png',
             },
             {
-                'title': 'NLP Text Analysis Tool',
-                'description': 'Natural Language Processing application for sentiment analysis and text classification using advanced AI models and prompt engineering techniques.',
-                'technologies': 'Python, NLP, AI, Django, Machine Learning',
-                'featured': False
-            }
+                'title': 'RAG Question-Answering App',
+                'description': 'Retrieval-Augmented Generation (RAG) system for semantic search over PDFs and documents. Uses FAISS vector embeddings, LLM-powered answering, document parsing, and web UI for intelligent Q&A on custom documents.',
+                'technologies': 'Python, FAISS, Vector Embeddings, LLMs, NLP, Streamlit, RAG',
+                'github_url': 'https://github.com/abid4850/Universal-RAG-Q-A-App',
+                'live_url': '',
+                'featured': True,
+                'image_file': 'rag-qa.png',
+            },
+            {
+                'title': 'Local AI Chatbot (Ollama)',
+                'description': 'Offline-first AI chatbot powered by local LLM models via Ollama. Features conversational memory, embedding-based retrieval, secure processing and low-latency inference without cloud dependencies.',
+                'technologies': 'Ollama, Local LLMs, Python, Embeddings, Conversational AI',
+                'github_url': 'https://github.com/abid4850/Universal-RAG-Q-A-App',
+                'live_url': '',
+                'featured': False,
+                'image_file': 'local-ai.png',
+            },
+            {
+                'title': 'Hugging Face Model Hub Integration',
+                'description': 'Curated Hugging Face Model Hub featuring fine-tuned transformers, custom datasets, and inference API wrappers. Demonstrates model versioning, evaluation metrics, and production deployment on HF Hub.',
+                'technologies': 'Hugging Face, Transformers, PyTorch, NLP, Model Hub, MLOps',
+                'github_url': 'https://github.com/abid4850/DSAAMP-Data-Science-to-Ai-Agent-mentorship-programme-/tree/main/07_NLP',
+                'live_url': 'https://huggingface.co/Abidhussain12',
+                'featured': True,
+                'image_file': 'hugging-face.png',
+            },
+            {
+                'title': 'LoRA Fine-Tuning for LLMs',
+                'description': 'Efficient LoRA-based fine-tuning framework for large language models. Includes training scripts, evaluation pipelines, hyperparameter optimization, and Hugging Face deployment examples for production LLM customization.',
+                'technologies': 'LoRA, Transformers, PyTorch, Hugging Face, Fine-tuning, QLoRA',
+                'github_url': 'https://huggingface.co/Abidhussain12',
+                'live_url': 'https://huggingface.co/Abidhussain12',
+                'featured': False,
+                'image_file': 'lora-tuning.png',
+            },
         ]
 
-        for project in projects_data:
-            Project.objects.create(**project)
-            self.stdout.write(f'Created project: {project["title"]}')
+        projects_dir = Path(settings.MEDIA_ROOT) / 'projects'
+        for project_data in projects_data:
+            image_file = project_data.pop('image_file', None)
+            project = Project.objects.create(**project_data)
+            
+            # Attach image if it exists
+            if image_file and projects_dir.exists():
+                image_path = projects_dir / image_file
+                if image_path.exists():
+                    with open(image_path, 'rb') as f:
+                        project.image.save(image_file, File(f), save=True)
+                    self.stdout.write(f'  ↳ Image attached: {image_file}')
+            
+            self.stdout.write(f'Created project: {project.title}')
 
         # Create Services
         services_data = [
