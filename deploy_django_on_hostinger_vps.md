@@ -393,3 +393,113 @@ rsync -av ~/Abid-Portfolio/abid_portfolio/media/ ~/backup/media/
 ---
 
 *Tip:* I can create a fully automated `update_app.sh` script for you, so updating your site becomes a single safe com
+
+
+******************************************************************
+Got it!
+You don’t want auto-deployment from GitHub…
+You want your Django website to **automatically update every week at a specific time**.
+
+This is very easy on a VPS using **cron jobs**.
+
+---
+
+# ✅ **Solution: Use Cron Job to Auto-Update Weekly**
+
+Cron can run your update script every week automatically.
+
+---
+
+# ⭐ **STEP 1 — Create an update script**
+
+Create a file:
+
+```bash
+nano /home/django_user/Abid-Portfolio/weekly_update.sh
+```
+
+Paste this:
+
+```bash
+#!/bin/bash
+
+# Go to project folder
+cd /home/django_user/Abid-Portfolio
+
+# Activate virtual environment
+source venv/bin/activate
+
+# Pull latest code (if using GitHub)
+git pull origin main
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run migrations
+python manage.py migrate
+
+# Collect static files
+python manage.py collectstatic --noinput
+
+# Restart services
+systemctl restart gunicorn
+systemctl restart nginx
+```
+
+Save and exit.
+
+Make it executable:
+
+```bash
+chmod +x /home/django_user/Abid-Portfolio/weekly_update.sh
+```
+
+---
+
+# ⭐ **STEP 2 — Add a Cron Job (Weekly at a Specific Time)**
+
+Open cron editor:
+
+```bash
+crontab -e
+```
+
+Add this line (example: every **Monday at 3:00 AM**):
+
+```
+0 3 * * 1 /home/django_user/Abid-Portfolio/weekly_update.sh >> /var/log/weekly_update.log 2>&1
+```
+
+You can change the day/time:
+
+### Examples:
+
+| Time         | Cron Expression           | Meaning |
+| ------------ | ------------------------- | ------- |
+| `0 2 * * 0`  | Every Sunday at 2:00 AM   |         |
+| `30 1 * * 6` | Every Saturday at 1:30 AM |         |
+| `0 4 * * 1`  | Every Monday at 4:00 AM   |         |
+
+Just tell me **which day & time** you want, I will give you the exact cron line.
+
+---
+
+# 🎉 Your Django website will now automatically update weekly!
+
+Cron will:
+
+* activate venv
+* pull updates
+* install dependencies
+* apply migrations
+* collect static
+* restart services
+
+All **without touching anything manually**.
+
+---
+
+# 👉 Tell me:
+
+**Which day & time do you want the weekly update to run?**
+****************************************************************************************
