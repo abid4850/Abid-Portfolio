@@ -82,18 +82,38 @@ def services_view(request):
         return render(request, 'portfolio/error.html', {'error': str(e)})
 
 def blogs(request):
-    """List of blog posts"""
+    """List of blog posts - only published posts"""
     try:
-        posts = Blog.objects.all()
-        return render(request, 'portfolio/blogs.html', {'posts': posts, 'profile': Profile.objects.first()})
+        # Filter only published posts (published_date is in the past)
+        from django.utils import timezone
+        posts = Blog.objects.select_related('author').filter(
+            published_date__lte=timezone.now().date()
+        ).order_by('-published_date', '-created_at')
+        
+        # Handle draft posts (published_date is null)
+        draft_posts = Blog.objects.select_related('author').filter(
+            published_date__isnull=True
+        ).order_by('-created_at')
+        
+        # Combine both querysets with published first
+        posts = posts | draft_posts
+        
+        return render(request, 'portfolio/blogs.html', {
+            'posts': posts, 
+            'profile': Profile.objects.first()
+        })
     except Exception as e:
         return render(request, 'portfolio/error.html', {'error': str(e)})
 
 
 def blog_detail(request, slug):
+    """Display a single blog post"""
     try:
         post = get_object_or_404(Blog, slug=slug)
-        return render(request, 'portfolio/blog_detail.html', {'post': post, 'profile': Profile.objects.first()})
+        return render(request, 'portfolio/blog_detail.html', {
+            'post': post, 
+            'profile': Profile.objects.first()
+        })
     except Exception as e:
         return render(request, 'portfolio/error.html', {'error': str(e)})
 

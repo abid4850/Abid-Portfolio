@@ -44,6 +44,27 @@ class ContactAdmin(admin.ModelAdmin):
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'published_date', 'created_at']
+    list_display = ['title', 'author', 'published_date', 'created_at']
+    list_filter = ['published_date', 'created_at', 'author']
+    search_fields = ['title', 'excerpt', 'content', 'author__username']
     prepopulated_fields = {'slug': ('title',)}
-    search_fields = ['title', 'excerpt', 'content']
+    readonly_fields = ['created_at', 'updated_at']
+    fieldsets = (
+        ('Content', {
+            'fields': ('title', 'slug', 'author', 'excerpt', 'content', 'image')
+        }),
+        ('Publishing', {
+            'fields': ('published_date',)
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        """Make author field readonly if blog is published"""
+        readonly = list(self.readonly_fields)
+        if obj:  # Editing existing object
+            readonly.append('author')
+        return readonly

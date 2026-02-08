@@ -17,7 +17,14 @@
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title font-weight-bold">{{ post.title }}</h5>
-                        <p class="text-muted small">{{ post.published_date|date:"M d, Y" }}</p>
+                        <div class="post-meta small text-muted mb-2">
+                            {% if post.author %}
+                            <span>✍️ {{ post.author.get_full_name|default:post.author.username }}</span>
+                            {% endif %}
+                            {% if post.published_date %}
+                            <span> • {{ post.published_date|date:"M d, Y" }}</span>
+                            {% endif %}
+                        </div>
                         {% if post.excerpt %}
                         <p class="card-text">{{ post.excerpt|truncatewords:20 }}</p>
                         {% else %}

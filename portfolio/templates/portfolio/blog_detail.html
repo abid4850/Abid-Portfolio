@@ -15,9 +15,14 @@
                 <div class="card border-0 shadow-lg rounded-2xl">
                     <div class="card-body p-5">
                         <h1 class="mb-2" style="font-size: 2.5rem; font-weight: 800;">{{ post.title }}</h1>
-                        {% if post.published_date %}
-                        <p class="text-muted">📅 Published on {{ post.published_date|date:"F d, Y" }}</p>
-                        {% endif %}
+                        <div class="post-meta d-flex align-items-center gap-3 mb-4 text-muted">
+                            {% if post.author %}
+                            <span>✍️ By <strong>{{ post.author.get_full_name|default:post.author.username }}</strong></span>
+                            {% endif %}
+                            {% if post.published_date %}
+                            <span>📅 {{ post.published_date|date:"F d, Y" }}</span>
+                            {% endif %}
+                        </div>
                         <hr style="margin: 2rem 0;">
                         <div class="post-content" style="font-size: 1.1rem; line-height: 1.8;">
                             {{ post.content|safe }}
